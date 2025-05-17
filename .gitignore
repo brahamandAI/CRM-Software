@@ -1,0 +1,24 @@
+node_modules/
+# Environment files
+.env
+*.env
+# Build and output directories
+/dist
+/build
+/coverage
+/frontend/build
+/backend/dist
+# Logs
+logs
+*.log
+npm-debug.log*
+# Editor and IDE files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+# OS generated files
+.DS_Store
+Thumbs.db
+# MongoDB data
+/data/db
