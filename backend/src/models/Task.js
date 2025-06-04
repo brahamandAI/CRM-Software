@@ -43,6 +43,10 @@ const TaskSchema = new mongoose.Schema({
   },
   reminderDate: {
     type: Date
+  },
+  archived: {
+    type: Boolean,
+    default: false
   }
 }, { timestamps: true });
 

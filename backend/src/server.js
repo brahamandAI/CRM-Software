@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const morgan = require('morgan');
+const AutomationService = require('./services/AutomationService');
 
 // Import routes
 const authRoutes = require('./routes/auth');
@@ -38,7 +39,11 @@ const options = {
 };
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/brahamand-crm', options)
-  .then(() => console.log('MongoDB connected successfully'))
+  .then(() => {
+    console.log('MongoDB connected successfully');
+    // Start automation services
+    AutomationService.scheduleAutomation();
+  })
   .catch(err => {
     console.error('MongoDB connection error:');
     console.error(err);
