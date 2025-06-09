@@ -70,6 +70,72 @@ const CustomerSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
+  },
+  // AI-related fields
+  leadScore: {
+    score: {
+      type: Number,
+      default: 50,
+      min: 0,
+      max: 100
+    },
+    lastUpdated: {
+      type: Date,
+      default: Date.now
+    }
+  },
+  churnRisk: {
+    score: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 100
+    },
+    level: {
+      type: String,
+      enum: ['Low', 'Medium', 'High', 'Unknown'],
+      default: 'Unknown'
+    },
+    factors: {
+      lowInteraction: Boolean,
+      negativeInteractions: Boolean,
+      poorTaskCompletion: Boolean
+    },
+    lastUpdated: {
+      type: Date,
+      default: Date.now
+    }
+  },
+  sentimentHistory: [{
+    date: {
+      type: Date,
+      default: Date.now
+    },
+    sentiment: {
+      type: String,
+      enum: ['positive', 'negative', 'neutral'],
+      required: true
+    },
+    source: {
+      type: String,
+      enum: ['email', 'chat', 'call', 'meeting', 'other'],
+      required: true
+    },
+    text: String
+  }],
+  marketingPreferences: {
+    emailSubscribed: {
+      type: Boolean,
+      default: true
+    },
+    lastCampaign: {
+      type: Date
+    },
+    preferredChannel: {
+      type: String,
+      enum: ['email', 'phone', 'sms', 'none'],
+      default: 'email'
+    }
   }
 }, { timestamps: true });
 

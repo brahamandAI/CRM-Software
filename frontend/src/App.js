@@ -12,10 +12,11 @@ import CustomerForm from './pages/customers/CustomerForm';
 import InteractionDetail from './pages/customers/InteractionDetail';
 import TaskList from './pages/tasks/TaskList';
 import TaskDetail from './pages/tasks/TaskDetail';
-import Navbar from './components/layouts/Navbar';
+import Navbar from './components/layout/Navbar';
 import Sidebar from './components/layouts/Sidebar';
 import Profile from './pages/auth/Profile';
 import Settings from './pages/settings/Settings';
+import Interactions from './pages/Interactions';
 
 // Layout component for authenticated pages
 const AuthenticatedLayout = ({ children }) => {
@@ -168,6 +169,16 @@ function AppRoutes() {
             <AuthenticatedLayout>
               <Settings />
             </AuthenticatedLayout>
+          </PrivateRoute>
+        }
+      />
+      
+      {/* Interactions route */}
+      <Route
+        path="/interactions"
+        element={
+          <PrivateRoute>
+            <Interactions />
           </PrivateRoute>
         }
       />

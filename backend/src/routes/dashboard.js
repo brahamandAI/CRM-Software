@@ -524,4 +524,95 @@ router.get('/export/interactions', protect, async (req, res) => {
   }
 });
 
+// @route   GET /api/dashboard/automation-stats
+// @desc    Get automation statistics
+// @access  Private
+router.get('/automation-stats', protect, async (req, res) => {
+  try {
+    const now = new Date();
+    const thirtyDaysAgo = new Date(now.setDate(now.getDate() - 30));
+
+    // Get automated status changes
+    const automatedStatusChanges = await Customer.aggregate([
+      {
+        $unwind: '$statusHistory'
+      },
+      {
+        $match: {
+          'statusHistory.date': { $gte: thirtyDaysAgo },
+          'statusHistory.notes': { 
+            $regex: /Automatically/i 
+          }
+        }
+      },
+      {
+        $group: {
+          _id: '$statusHistory.status',
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    // Get auto-assigned tasks
+    const autoAssignedTasks = await Task.countDocuments({
+      createdAt: { $gte: thirtyDaysAgo },
+      assignedTo: { $exists: true }
+    });
+
+    // Get archived tasks
+    const archivedTasks = await Task.countDocuments({
+      archived: true
+    });
+
+    // Get workload distribution
+    const workloadDistribution = await Task.aggregate([
+      {
+        $match: {
+          status: { $in: ['pending', 'in-progress'] }
+        }
+      },
+      {
+        $group: {
+          _id: '$assignedTo',
+          taskCount: { $sum: 1 }
+        }
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'user'
+        }
+      },
+      {
+        $unwind: '$user'
+      },
+      {
+        $project: {
+          _id: 1,
+          taskCount: 1,
+          agentName: '$user.name'
+        }
+      }
+    ]);
+
+    res.json({
+      success: true,
+      data: {
+        automatedStatusChanges,
+        autoAssignedTasks,
+        archivedTasks,
+        workloadDistribution
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Server error' 
+    });
+  }
+});
+
 module.exports = router; 

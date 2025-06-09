@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
+const Modal = ({ isOpen, onClose, title, children, size = 'md', actions }) => {
   // Handle escape key press to close modal
   useEffect(() => {
     const handleEscKey = (event) => {
@@ -34,43 +34,34 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
   };
 
   return (
-    <div className="fixed z-50 inset-0 overflow-y-auto">
-      <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <div className="fixed inset-0 z-50 overflow-y-auto">
+      <div className="flex min-h-screen items-center justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0">
         {/* Background overlay */}
-        <div
-          className="fixed inset-0 transition-opacity"
-          aria-hidden="true"
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-75 transition-opacity" 
           onClick={onClose}
-        >
-          <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-        </div>
+        />
 
         {/* Modal panel */}
-        <div
-          className={`inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle ${sizeClasses[size]} w-full`}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="modal-headline"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/* Header */}
-          <div className="bg-gray-100 px-4 py-3 flex justify-between items-center">
-            <h3 className="text-lg font-medium text-gray-900" id="modal-headline">
-              {title}
-            </h3>
-            <button
-              type="button"
-              className="text-gray-500 hover:text-gray-700 focus:outline-none"
-              onClick={onClose}
-            >
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+        <div className="inline-block transform overflow-hidden rounded-lg bg-dark-secondary text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:align-middle">
+          <div className="bg-dark-secondary px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+            <div className="sm:flex sm:items-start">
+              <div className="mt-3 text-center sm:mt-0 sm:text-left w-full">
+                <h3 className="text-lg font-medium leading-6 text-white">
+                  {title}
+                </h3>
+                <div className="mt-4 text-gray-300">
+                  {children}
+                </div>
+              </div>
+            </div>
           </div>
-
-          {/* Content */}
-          <div className="p-6">{children}</div>
+          
+          {actions && (
+            <div className="bg-dark-accent px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+              {actions}
+            </div>
+          )}
         </div>
       </div>
     </div>

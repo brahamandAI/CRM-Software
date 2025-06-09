@@ -5,7 +5,18 @@ module.exports = {
     "./public/index.html",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        dark: {
+          DEFAULT: '#111827',
+          secondary: '#1a1f2e',
+          accent: '#374151'
+        }
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 } 

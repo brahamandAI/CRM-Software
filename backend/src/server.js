@@ -12,6 +12,7 @@ const customerRoutes = require('./routes/customers');
 const interactionRoutes = require('./routes/interactions');
 const taskRoutes = require('./routes/tasks');
 const dashboardRoutes = require('./routes/dashboard');
+const aiRoutes = require('./routes/ai');
 
 // Create Express app
 const app = express();
@@ -61,6 +62,7 @@ app.use('/api/customers', customerRoutes);
 app.use('/api/interactions', interactionRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/ai', aiRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
